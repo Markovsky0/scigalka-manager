@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: "auth-demo"
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org:
+      springframework:
+        security: trace
+
+rsa:
+  private-key: classpath:certs/private.pem
+  public-key: classpath:certs/public.pem
+#eureka:
+#  client:
+#    enabled: true
+#    healthcheck:
+#      enabled: false

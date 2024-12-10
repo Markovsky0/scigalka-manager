@@ -1,0 +1,82 @@
+spring:
+  application:
+    name: gateway
+  session:
+    timeout: 1800 # 30 * 60
+  main:
+    allow-circular-references: false
+  output:
+    ansi:
+      enabled: always
+  cloud:
+    gateway:
+      x-forwarded:
+        enabled: true
+        for-enabled: true
+        host-enabled: true
+        port-enabled: true
+        prefix-enabled: true
+        proto-enabled: true
+      httpclient:
+        connect-timeout: 3600000
+        response-timeout: 3600s
+      default-filters:
+        - RemoveResponseHeader=X-Frame-Options
+      routes:
+        - id: auth-demo
+          uri: lb://auth-demo
+          predicates:
+            - Path=/auth-demo/**
+          filters:
+            - RewritePath=/auth-demo/(?<path>.*), /$\{path}
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-headers: "*"
+            allowed-methods:
+              - GET
+              - PUT
+              - POST
+              - PATCH
+              - DELETE
+              - OPTIONS
+              - HEAD
+              - TRACE
+        add-to-simple-url-handler-mapping: true
+    loadbalancer:
+      eager-load:
+        clients:
+          - auth-demo
+
+cors:
+  origin: localhost
+  credentials: true
+
+server:
+  port: 8080
+  shutdown: graceful
+  http2:
+    enabled: true
+  forward-headers-strategy: framework
+  netty:
+    initial-buffer-size: 2KB
+    max-initial-line-length: 16KB
+
+logging:
+  level:
+    org:
+      springframework:
+        security: debug
+
+eureka:
+#  instance:
+#    prefer-ip-address: true
+#    metadata-map:
+#      instanceId: ${spring.application.name}:${random.value}
+  client:
+    enabled: true
+    healthcheck:
+      enabled: false
+    service-url:
+      defaultZone: http://eureka:8761/eureka

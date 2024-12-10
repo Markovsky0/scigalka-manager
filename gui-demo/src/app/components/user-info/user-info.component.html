@@ -1,0 +1,8 @@
+<!--<p>user-info works!</p>-->
+<!--<button (click)="log()">log</button>-->
+@if (avatarSource !== '') {
+  <img [src]="avatarSource" alt="user_avatar">
+  <button (click)="logout()">logout</button>
+} @else {
+  <p>przenieść login tutaj (prawdopodobnie)</p>
+}
