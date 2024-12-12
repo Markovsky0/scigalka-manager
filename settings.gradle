@@ -1,0 +1,19 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'scigalka-manager-project'
+include 'api-gateway'
+include 'auth-demo'
+include 'sm-api'
+include 'sm-libs'
+include 'sm-security'
+
+buildCache {
+    local {
+        directory = "${settingsDir}/cache".toString()
+    }
+}

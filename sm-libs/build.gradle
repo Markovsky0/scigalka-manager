@@ -15,23 +15,26 @@ java {
     }
 }
 
-repositories {
-    mavenCentral()
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
-ext {
-    set('springCloudVersion', "2024.0.0")
+repositories {
+    mavenCentral()
 }
 
 dependencies {
     // projects
     implementation project(":sm-api")
-    implementation project(":sm-libs")
-    implementation project(":sm-security")
 
     // spring
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.security:spring-security-oauth2-jose'
+
+    // json
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
     // lombok
     compileOnly 'org.projectlombok:lombok'
@@ -39,14 +42,7 @@ dependencies {
 
     // tests
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
 }
 
 tasks.named('test') {

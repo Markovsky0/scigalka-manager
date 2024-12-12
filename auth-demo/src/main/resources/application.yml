@@ -12,8 +12,8 @@ logging:
         security: trace
 
 rsa:
-  private-key: classpath:certs/private.pem
-  public-key: classpath:certs/public.pem
+  private-key: certs/private.pem
+  public-key: certs/public.pem
 #eureka:
 #  client:
 #    enabled: true
