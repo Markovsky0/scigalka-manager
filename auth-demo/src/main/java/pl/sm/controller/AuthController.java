@@ -30,8 +30,7 @@ public class AuthController {
 
     @PostMapping(value = "/jwt", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ObjectResponse<UserData>> generateJwtToken(@RequestParam("access_token") String accessToken) {
-        // todo refactor
-        log.debug("Generating JWT token");
+        log.info("POST /auth/jwt?access_token={} endpoint invoked", accessToken);
         GuildMember guildMemberData = discordService.getGuildMemberData(accessToken);
         Set<String> mappedGuildRoles = discordService.mapGuildRoles(guildMemberData);
         String token = jwtService.generateToken(guildMemberData, mappedGuildRoles);

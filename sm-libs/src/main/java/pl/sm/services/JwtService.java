@@ -15,6 +15,7 @@ import java.util.Set;
 public class JwtService {
     private final JwtDecoder jwtDecoder;
     private final JwtEncoder jwtEncoder;
+    private final String issuer = "auth-demo";
 
     public JwtService(JwtDecoder jwtDecoder, JwtEncoder jwtEncoder) {
         this.jwtDecoder = jwtDecoder;
@@ -24,7 +25,7 @@ public class JwtService {
     public String generateToken(GuildMember guildMember, Set<String> authorities) {
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()
-            .issuer("self")
+            .issuer(issuer)
             .expiresAt(now.plus(15, ChronoUnit.MINUTES))
             .issuedAt(now)
             .subject(guildMember.getUser().getId())
@@ -42,7 +43,7 @@ public class JwtService {
 
     public boolean isTokenValid(Jwt jwt) {
         Instant now = Instant.now();
-        return now.isAfter(Objects.requireNonNull(jwt.getIssuedAt())) && now.isBefore(Objects.requireNonNull(jwt.getExpiresAt()));
+        return issuer.equals(jwt.getIssuer().toString()) && now.isBefore(Objects.requireNonNull(jwt.getExpiresAt()));
     }
 
     public List<SimpleGrantedAuthority> getRoles(Jwt jwt) {

@@ -4,16 +4,23 @@ spring:
 
 server:
   port: 8080
+  shutdown: graceful
 
 logging:
   level:
     org:
       springframework:
-        security: trace
+        security: debug
 
 rsa:
   private-key: certs/private.pem
   public-key: certs/public.pem
+
+discord:
+  guild:
+    id: 306053110663741442 # ściro XDDDDDDDD
+    member-url: https://discord.com/api/v10/users/@me/guilds/{guild.id}/member
+
 #eureka:
 #  client:
 #    enabled: true

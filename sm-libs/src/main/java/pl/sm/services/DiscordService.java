@@ -1,5 +1,6 @@
 package pl.sm.services;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -13,6 +14,11 @@ import java.util.Set;
 
 @Service
 public class DiscordService {
+    @Value("${discord.guild.id}")
+    private Long guildId;
+    @Value("${discord.guild.member-url}")
+    private String guildMemberUrl;
+
     private final RestTemplate restTemplate;
 
     public DiscordService() {
@@ -22,8 +28,8 @@ public class DiscordService {
     public GuildMember getGuildMemberData(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, "Bearer ".concat(accessToken));
-        GuildMember guildMemberData = restTemplate.exchange("https://discord.com/api/v10/users/@me/guilds/{guild.id}/member", HttpMethod.GET, new HttpEntity<>(headers), GuildMember.class, 306053110663741442L)
-            .getBody();
+        GuildMember guildMemberData = restTemplate.exchange(guildMemberUrl, HttpMethod.GET, new HttpEntity<>(headers),
+                GuildMember.class, guildId).getBody();
         if (guildMemberData == null) {
             // todo exception
             throw new RuntimeException();
